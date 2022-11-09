@@ -52,3 +52,34 @@ const burger = document.querySelector(".menu__icon");
 burger.addEventListener("click", () => {
   nav.classList.toggle("active");
 });
+
+let form = document.querySelector('.contact__form')
+let fields = form.querySelectorAll('.input')
+
+form.addEventListener('submit', event => {
+  event.preventDefault()
+  let errors = form.querySelectorAll('.error')
+  errors.forEach(e => e.remove())
+
+  for (let i = 0; i < fields.length; i++) {
+    if (fields[0].value && fields[1].value.includes('@') && fields[2].value) {
+      form.remove()
+      let success = document.createElement('div')
+      success.style.fontSize = "40px"
+      success.style.color = "#39A0ED"
+      success.innerHTML = "Thanks for your message!"
+      document.getElementById('contact').after(success)
+      break;
+    }
+    else if (!fields[i].value) checkFields(i, 'Cannot be blank')
+    else if (i == 1 && !fields[i].value.includes('@')) checkFields(i, 'Incorrect email')
+  }
+})
+
+let checkFields = (i, message) => {
+  let error = document.createElement('div')
+  error.className = 'error'
+  error.style.color = 'red'
+  error.innerHTML = message
+  form[i].parentElement.insertBefore(error, fields[i])
+}
